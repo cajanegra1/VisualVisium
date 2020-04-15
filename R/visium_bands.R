@@ -19,7 +19,7 @@ visium_bands <- function(tpl) {
     rownames(in_tissue_mat) <- in_tissue_spots$barcode
     out_tissue_mat <- as.matrix(out_tissue_spots[, list(imagerow, imagecol)])
     rownames(out_tissue_mat) <- out_tissue_spots$barcode
-    dists <- pdist(in_tissue_mat, out_tissue_mat)
+    dists <- pdist::pdist(in_tissue_mat, out_tissue_mat)
     dist_matr <- as.matrix(dists)
     rownames(dist_matr) <- rownames(in_tissue_mat)
     colnames(dist_matr) <- rownames(out_tissue_mat)
