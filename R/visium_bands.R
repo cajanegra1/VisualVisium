@@ -12,6 +12,7 @@
 #'
 #' @examples
 #' R code here showing how your function works
+.datatable.aware=TRUE
 visium_bands <- function(tpl) {
     data.table::setDT(tpl)
     in_tissue_spots <- tpl[tissue == 1]
