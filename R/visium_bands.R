@@ -13,7 +13,7 @@
 #' @examples
 #' R code here showing how your function works
 visium_bands <- function(tpl) {
-    tpl <- data.table::as.data.table(tpl)
+    data.table::setDT(tpl)
     in_tissue_spots <- tpl[tissue == 1]
     out_tissue_spots <- tpl[tissue == 0]
     in_tissue_mat <- as.matrix(in_tissue_spots[, list(imagerow, imagecol)])
