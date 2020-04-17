@@ -41,6 +41,7 @@ visium_bands <- function(tpl, band_width = 30) {
         eval(parse(text = command))
         bp_ctr <- bp_ctr+1
     }
+    last_bp <- bp_ctr - 1
 
     # negative bands, inside of tissue.
     bm_ctr <- 1
@@ -53,6 +54,7 @@ visium_bands <- function(tpl, band_width = 30) {
         eval(parse(text = command))
         bm_ctr <- bm_ctr+1
     }
+    last_bm <- bm_ctr - 1
 
     bp_vec <- paste0('bp', 1:last_bp)
     bm_vec <- paste0('bm', last_bm:1)
