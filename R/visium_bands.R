@@ -4,6 +4,8 @@
 #'
 #' @param tpl The tissue position list table, a data.table
 #'
+#' @param band_width The width of each band in lowres pixels, a float
+#'
 #' @return tpl with "band" column, a data.table
 #'
 #' @keywords spatial
@@ -13,7 +15,7 @@
 #' @examples
 #' R code here showing how your function works
 .datatable.aware=TRUE
-visium_bands <- function(tpl) {
+visium_bands <- function(tpl, band_width = 30) {
     data.table::setDT(tpl)
     in_tissue_spots <- tpl[tissue == 1]
     out_tissue_spots <- tpl[tissue == 0]
@@ -27,10 +29,6 @@ visium_bands <- function(tpl) {
     colnames(dist_matr) <- rownames(out_tissue_mat)
     in_tissue_spots[, min_dist := apply(dist_matr, 1, min)]
     out_tissue_spots[, min_dist := apply(dist_matr, 2, min)]
-    band_width <- (1/4)*(max(in_tissue_spots$min_dist)-min(in_tissue_spots$min_dist))
-    if (band_width < 30) { # units are pixels.
-        band_width <- 30
-    }
 
     # positive bands, outside of tissue.
     bp_ctr <- 1
@@ -43,13 +41,6 @@ visium_bands <- function(tpl) {
         eval(parse(text = command))
         bp_ctr <- bp_ctr+1
     }
-    last_bp <- bp_ctr-1
-    if (last_bp == 0) {
-        # no spots fall in any of the bands.
-        out_tissue_spots[, bp1 := 1]
-        in_tissue_spots[, bp1 := 0]
-        last_bp <- 1
-    }
 
     # negative bands, inside of tissue.
     bm_ctr <- 1
@@ -61,13 +52,6 @@ visium_bands <- function(tpl) {
         command <- paste0("out_tissue_spots[, bm", bm_ctr, " := 0]")
         eval(parse(text = command))
         bm_ctr <- bm_ctr+1
-    }
-    last_bm <- bm_ctr-1
-    if (last_bm == 0) {
-        # no spots fall in any of the bands.
-        in_tissue_spots[, bm1 := 1]
-        out_tissue_spots[, bm1 := 0]
-        last_bm <- 1
     }
 
     bp_vec <- paste0('bp', 1:last_bp)
