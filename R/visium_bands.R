@@ -17,6 +17,44 @@
 .datatable.aware=TRUE
 visium_bands <- function(tpl, band_width = 30) {
     data.table::setDT(tpl)
+
+    # in order to avoid problems with datasets with all spots under tissue,
+    # create fake perimeter.
+    # left border
+    tpl <- rbind(tpl, data.table(barcode = 'x',
+                                 tissue = 0,
+                                 row = 0,
+                                 col = 0,
+                                 imagerow = tpl[col %in% c(0,1)]$imagerow,
+                                 imagecol = (tpl[col %in% c(0,1)]$imagecol-1),
+                                 umis = 0))
+    # right border
+    tpl <- rbind(tpl, data.table(barcode = 'x',
+                                 tissue = 0,
+                                 row = 0,
+                                 col = 0,
+                                 imagerow = tpl[col %in% c(126,127)]$imagerow,
+                                 imagecol = (tpl[col %in% c(126,127)]$imagecol+1),
+                                 umis = 0))
+    
+    # top border
+    tpl <- rbind(tpl, data.table(barcode = 'x',
+                                 tissue = 0,
+                                 row = 0,
+                                 col = 0,
+                                 imagerow = (tpl[row == 77]$imagerow+1),
+                                 imagecol = tpl[row == 77]$imagecol,
+                                 umis = 0))
+    
+    # bottom border
+    tpl <- rbind(tpl, data.table(barcode = 'x',
+                                 tissue = 0,
+                                 row = 0,
+                                 col = 0,
+                                 imagerow = (tpl[row == 0]$imagerow-1),
+                                 imagecol = tpl[row == 0]$imagecol,
+                                 umis = 0))
+
     in_tissue_spots <- tpl[tissue == 1]
     out_tissue_spots <- tpl[tissue == 0]
     in_tissue_mat <- as.matrix(in_tissue_spots[, list(imagerow, imagecol)])
