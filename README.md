@@ -1,11 +1,11 @@
 # VisualVisium
 R functions for visualizing Visium data. 
 
-Installation: simply clone the repo and run from R: 
+Installation: simply clone the repo and run from R (notice `/path/to/repo/` points to the parent directory, not the `VisualVisium` directory itself): 
 
 ```
 library('devtools')
-setwd("/path/to/VisualVisium")
+setwd("/path/to/repo/")
 install('VisualVisium')
 ```
 
