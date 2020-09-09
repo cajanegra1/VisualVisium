@@ -15,4 +15,4 @@ This helper package contains two functions:
 
 `visium_bands` groups Visium spots into bands that align with the perimeter of the tissue. 
 
-Head over to the [demo](../blob/master/VisualVisium_demo/VisualVisium_demo.md) for usage examples.
+Head over to the [demo](VisualVisium_demo/VisualVisium_demo.md) for usage examples.
